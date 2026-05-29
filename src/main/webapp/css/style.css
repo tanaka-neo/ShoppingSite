@@ -1,0 +1,220 @@
+body{
+    margin:0;
+    background:#f5f5f5;
+    font-family:Arial, sans-serif;
+}
+
+/* 画面中央 */
+.login-container{
+    height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+}
+
+/* カード */
+.login-card{
+
+    width:380px;
+
+    background:white;
+
+    padding:50px;
+
+    border-radius:16px;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.08);
+
+}
+
+/* タイトル */
+.login-card h1{
+
+    margin-bottom:35px;
+
+    text-align:center;
+
+    font-size:32px;
+
+    color:#222;
+}
+
+/* ラベル */
+.login-card label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+    color:#555;
+}
+
+/* 入力欄 */
+.login-card input[type="text"],
+.login-card input[type="password"]{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-bottom:24px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    box-sizing:border-box;
+}
+
+/* ボタン */
+.login-button{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:999px;
+
+    background:white;
+
+    color:#222;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:0.2s;
+}
+
+/* ホバー */
+.login-button:hover{
+
+    opacity:0.85;
+}
+
+
+
+
+/* =========================
+   user-menu
+========================= */
+
+.menu-container{
+
+    height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+}
+
+.menu-card{
+
+    width:380px;
+
+    background:white;
+
+    padding:50px;
+
+    border-radius:16px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+
+    text-align:center;
+}
+
+.welcome-text{
+
+    margin-bottom:30px;
+
+    font-size:18px;
+
+    color:#333;
+}
+
+/* 共通ボタン */
+.menu-button,
+.logout-button,
+.back-button{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-top:15px;
+
+    border:none;
+
+    border-radius:999px;
+
+    background:#222;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:0.2s;
+}
+
+.menu-button:hover,
+.logout-button:hover,
+.back-button:hover{
+
+    opacity:0.85;
+}
+
+/* 削除ボタンだけ赤系 */
+.delete-button{
+
+    background:#d9534f;
+}
+
+/* =========================
+   error page
+========================= */
+
+.error-container{
+
+    height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+}
+
+.error-card{
+
+    width:380px;
+
+    background:white;
+
+    padding:50px;
+
+    border-radius:16px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+
+    text-align:center;
+}
+
+.error-text{
+
+    margin:30px 0;
+
+    color:#d9534f;
+
+    font-size:16px;
+}
