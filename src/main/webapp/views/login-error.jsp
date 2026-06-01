@@ -5,12 +5,12 @@
 
 
 	<div class="error-card">
-		<p class="error-text">IDもしくはパスワードが違います</p>
 
+		<p class="error-text" style="color: red;">${message}</p>
 
 		<input type="button" value="ログイン画面へ戻る"
 			onclick="location.href='${pageContext.request.contextPath}/views/login-in.jsp'">
 	</div>
 </div>
-s
+
 <%@include file="../footer.html"%>

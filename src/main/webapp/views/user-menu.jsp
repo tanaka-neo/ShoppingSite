@@ -1,5 +1,5 @@
 <%@page contentType="text/html; charset=UTF-8"%>
-
+<!--ログインチェック、セッションにユーザー情報があるか確認-->
 <%
 if (session.getAttribute("users") == null) {
 	response.sendRedirect(request.getContextPath() + "/views/login-in.jsp");
@@ -10,7 +10,7 @@ if (session.getAttribute("users") == null) {
 <div class="menu-container">
 	<div class="menu-card">
 
-		
+
 
 		<p class="welcome-text">ようこそ、${users.lastName}さん！</p>
 
