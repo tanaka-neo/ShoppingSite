@@ -10,13 +10,24 @@
 		<form
 			action="${pageContext.request.contextPath}/jp/co/aforce/servlet/Login.action"
 			method="post">
-			<label>ID</label> 
-			<input type="text" name="memberId"> 
+			<label>ID</label> <input type="text" name="memberId"> 
+			
 			<label>パスワード</label>
-			<input type="password" name="password" class="login-button"> 
-			<input type="submit"value="ログイン"> 
-			<input type="button" value="新規会員登録">
+			<!--Htmlのtype=passwordの仕様で勝手に黒丸になる-->
+			<input type="password" name="password" class="login-button">
+
+			<!--<input type="password" id="password"> -->
+			<!--<span onclick="togglePassword()">👁</span> -->
+
+
+			<input type="submit" value="ログイン">
 		</form>
+
+	
+			<input type="button" value="新規会員登録"
+			onclick="location.href='${pageContext.request.contextPath}/views/register.jsp'">
+
+		
 
 	</div>
 </div>
