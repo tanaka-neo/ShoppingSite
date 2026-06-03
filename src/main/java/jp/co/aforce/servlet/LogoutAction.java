@@ -21,7 +21,7 @@ public class LogoutAction extends Action {
 		if (session != null) {
 
 			//セッションからログイン中のユーザー情報を獲得する
-			Users users = (Users) session.getAttribute("users");
+			Users user = (Users) session.getAttribute("user");
 			//アプリケーションスコープの取得
 			ServletContext application = session.getServletContext();
 
@@ -29,9 +29,9 @@ public class LogoutAction extends Action {
 			Set<String> loginUsers = (Set<String>) application.getAttribute("loginUsers");
 
 			//ログイン中のユーザー一覧と、セッションのユーザー情報が両方存在する場合のみ処理
-			if (loginUsers != null && users != null) {
+			if (loginUsers != null && user != null) {
 
-				loginUsers.remove(users.getMemberId());
+				loginUsers.remove(user.getMemberId());
 				//更新したログイン中ユーザー一覧をアプリケーションスコープに再保存する。
 				application.setAttribute("loginUsers", loginUsers);
 			}

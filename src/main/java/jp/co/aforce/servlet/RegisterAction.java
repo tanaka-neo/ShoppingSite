@@ -14,32 +14,33 @@ public class RegisterAction extends Action {
 
 		HttpSession session = request.getSession();
 
-		Users users = (Users) session.getAttribute("user");
+		Users user = (Users) session.getAttribute("user");
 
-		if (users == null) {
-			return "/register.jsp";
+		if (user == null) {
+			return "/views/register.jsp";
 		}
 
 		UsersDAO dao = new UsersDAO();
 
 		// 重複チェック
-		Users existing = dao.search(users.getMemberId());
+		Users existing = dao.search(user.getMemberId());
 
 		if (existing != null) {
-			request.setAttribute("error", "このIDは既に使われています");
-			return "/register.jsp";
+			request.setAttribute("message", "このIDは既に使われています");
+			return "/views/login-error.jsp";
 		}
 
-		int line = dao.insert(users);
+		int line = dao.insert(user);
 
 		// 登録後セッション削除
+//		桁数オーバーや接続が切れたときに出る
 		session.removeAttribute("user");
 
 		if (line > 0) {
 			return "/views/register-success.jsp";
 		} else {
-			request.setAttribute("error", "登録に失敗しました");
-			return "/register.jsp";
+			request.setAttribute("message", "登録に失敗しました");
+			return "/views/login-error.jsp";
 		}
 	}
 }

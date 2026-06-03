@@ -23,10 +23,10 @@ public class LoginAction extends Action {
 		// DBからユーザー情報を検索するDAOを生成
 		UsersDAO dao = new UsersDAO();
 		//入力されたIDとパスワードでDB検索を行う。成功時はUsersオブジェクト、失敗はnullが返る
-		Users users = dao.search(memberId, password);
+		Users user = dao.search(memberId, password);
 
 		//ログイン成功時
-		if (users != null) {
+		if (user != null) {
 
 			//アプリケーションスコープ（サーバー全体で共有される領域）を取得する。これは「ログイン中ユーザー一覧」を管理するために使用する。
 			ServletContext application = session.getServletContext();
@@ -37,11 +37,13 @@ public class LoginAction extends Action {
 			//初回ログイン時などでリストが存在しない場合に新しくSetする
 			if (loginUsers == null) {
 				loginUsers = new HashSet<String>();
+				application.setAttribute("loginUsers", loginUsers);
 			}
 
 			//すでにログイン中かのチェック。別ブラウザからのログインもここで判断する。
 			if (loginUsers.contains(memberId)) {
 				request.setAttribute(
+						
 						"message",
 						"このユーザーは既にログイン中です");
 				return "/views/login-error.jsp";
@@ -54,7 +56,7 @@ public class LoginAction extends Action {
 			application.setAttribute("loginUsers", loginUsers);
 
 			//セッションにユーザー情報保存
-			session.setAttribute("users", users);
+			session.setAttribute("user", user);
 
 			return "/views/user-menu.jsp";
 		}

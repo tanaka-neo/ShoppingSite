@@ -46,6 +46,7 @@ public class UsersDAO extends DAO {
 	}
 
 	//ID重複チェック用
+	// ユーザーが存在するかだけ確認するため、値の取得は不要
 	public Users search(String memberId)
 			throws Exception {
 		//	検索結果を格納するUsersオブジェクト。ユーザーが見つからない場合はnullのまま
@@ -116,4 +117,46 @@ public class UsersDAO extends DAO {
 		return line;
 	}
 
+	//会員情報修正用
+	public int update(Users users) throws Exception {
+
+		Connection con = getConnection();
+
+		PreparedStatement st = con.prepareStatement(
+				"UPDATE users "
+						+ "SET PASSWORD=?, LAST_NAME=?, FIRST_NAME=?, ADDRESS=?, MAIL_ADDRESS=? "
+						+ "WHERE MEMBER_ID=?");
+
+		st.setString(1, users.getPassword());
+		st.setString(2, users.getLastName());
+		st.setString(3, users.getFirstName());
+		st.setString(4, users.getAddress());
+		st.setString(5, users.getMailAddress());
+		st.setString(6, users.getMemberId());
+
+		int line = st.executeUpdate();
+
+		st.close();
+		con.close();
+
+		return line;
+	}
+
+	//会員削除用
+	public int delete(String memberId) throws Exception {
+
+		Connection con = getConnection();
+
+		PreparedStatement st = con.prepareStatement(
+				"DELETE FROM users WHERE MEMBER_ID=?");
+
+		st.setString(1, memberId);
+
+		int line = st.executeUpdate();
+
+		st.close();
+		con.close();
+
+		return line;
+	}
 }

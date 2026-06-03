@@ -1,16 +1,16 @@
 <%@page contentType="text/html; charset=UTF-8"%>
-<%@include file="../header.html"%>
+<%@include file="../header.jsp"%>
 
-<div class="error-container">
+<div class="container">
 
 
-	<div class="error-card">
+	<div class="card">
 
-		<p class="error-text" style="color: red;">${message}</p>
+		<p class="message message-error">${message}</p>
 
 		<input type="button" value="ログイン画面へ戻る"
 			onclick="location.href='${pageContext.request.contextPath}/views/login-in.jsp'">
 	</div>
 </div>
 
-<%@include file="../footer.html"%>
+<%@include file="../footer.jsp"%>

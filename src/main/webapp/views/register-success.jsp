@@ -1,16 +1,16 @@
 <%@page contentType="text/html; charset=UTF-8"%>
-<%@include file="../header.html"%>
+<%@include file="../header.jsp"%>
 
-<div class="success-container">
+<div class="container">
 
 
-	<div class="success-card">
+	<div class="card">
 
-		<p>登録が完了しました</p>
+		<p class="message message-success">登録が完了しました</p>
 
 		<input type="button" value="ログイン画面へ戻る"
 			onclick="location.href='${pageContext.request.contextPath}/views/login-in.jsp'">
 	</div>
 </div>
 
-<%@include file="../footer.html"%>
+<%@include file="../footer.jsp"%>
