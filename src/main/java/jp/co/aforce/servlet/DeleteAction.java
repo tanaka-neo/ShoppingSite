@@ -10,28 +10,27 @@ import tool.Action;
 
 public class DeleteAction extends Action {
 
-    public String execute(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+	public String execute(
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 
-//    	既にログインしているセッションのみ取得
-    	HttpSession session = request.getSession(false);
-    	
-    	// セッションがない、またはユーザー情報がない不正アクセスに対してログイン画面へ飛ばす
-    	if (session == null || session.getAttribute("user") == null) {
-    	    return "/views/login-in.jsp";
-    	}
-  
-        Users user =
-                (Users) session.getAttribute("user");
+		// 既にログインしているセッションのみ取得
+		HttpSession session = request.getSession(false);
+		// セッションが無い、またはログインしていなければ処理を通さない
+		if (session == null || session.getAttribute("user") == null) {
+			return "/views/login-in.jsp";
+		}
 
-//        DAOを呼び出し、deleteメソッドを実行
-        UsersDAO dao = new UsersDAO();
-        dao.delete(user.getMemberId());
+		// セッションから現在ログインしているユーザーの情報を取得（誰が操作しているかを特定するため）
+		Users loginUser = (Users) session.getAttribute("user");
 
-//        セッションの破棄
-        session.invalidate();
+		//  DAOを呼び出し、sqlのdeleteメソッドを実行
+		UsersDAO dao = new UsersDAO();
+		dao.delete(loginUser.getMemberId());
 
-        return "/views/login-in.jsp";
-    }
+		//  セッションの破棄
+		session.invalidate();
+
+		return "/views/login-in.jsp";
+	}
 }

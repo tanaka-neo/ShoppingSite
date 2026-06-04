@@ -8,7 +8,7 @@
 
 		<p class="message message-error">${message}</p>
 
-		<input type="button" value="ログイン画面へ戻る"
+		<input type="button" class="button" value="ログイン画面へ戻る"
 			onclick="location.href='${pageContext.request.contextPath}/views/login-in.jsp'">
 	</div>
 </div>

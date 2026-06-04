@@ -1,7 +1,7 @@
 package jp.co.aforce.servlet;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,58 +13,68 @@ import jp.co.aforce.dao.UsersDAO;
 import tool.Action;
 
 public class LoginAction extends Action {
+	@Override
 	public String execute(
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		//ログイン成功時にユーザー情報を保存するためのセッションを取得
+
+		// ログイン成功時にユーザー情報を保存するためのセッションを取得
 		HttpSession session = request.getSession();
-		//入力値を取得
+
+		// 入力値を取得
 		String memberId = request.getParameter("memberId");
 		String password = request.getParameter("password");
+
 		// DBからユーザー情報を検索するDAOを生成
 		UsersDAO dao = new UsersDAO();
-		//入力されたIDとパスワードでDB検索を行う。成功時はUsersオブジェクト、失敗はnullが返る
-		Users user = dao.search(memberId, password);
+		
+		// 入力されたIDとパスワードでDB検索を行う。成功時はUsersオブジェクト、失敗はnullが返る
+		Users dbUser = dao.search(memberId, password);
 
-		//ログイン成功時
-		if (user != null) {
+		// ログイン成功時
+		if (dbUser != null) {
 
-			//アプリケーションスコープ（サーバー全体で共有される領域）を取得する。これは「ログイン中ユーザー一覧」を管理するために使用する。
-			ServletContext application = session.getServletContext();
+			// アプリケーションスコープ（サーバー全体で共有される領域）を取得
+			ServletContext appScope = session.getServletContext();
 
-			//ログイン中のユーザーID一覧を取得。ない場合はNULL 
-			Set<String> loginUsers = (Set<String>) application.getAttribute("loginUsers");
+			// ログイン中のユーザーIDとセッションのマップを取得
+			@SuppressWarnings("unchecked")
+			Map<String, HttpSession> loginUsersMap = (Map<String, HttpSession>) appScope.getAttribute("loginUsersMap");
 
-			//初回ログイン時などでリストが存在しない場合に新しくSetする
-			if (loginUsers == null) {
-				loginUsers = new HashSet<String>();
-				application.setAttribute("loginUsers", loginUsers);
+			// 初回ログイン時などでマップが存在しない場合に新しく作成
+			if (loginUsersMap == null) {
+				loginUsersMap = new HashMap<String, HttpSession>();
+				appScope.setAttribute("loginUsersMap", loginUsersMap);
 			}
 
-			//すでにログイン中かのチェック。別ブラウザからのログインもここで判断する。
-			if (loginUsers.contains(memberId)) {
-				request.setAttribute(
-						
-						"message",
-						"このユーザーは既にログイン中です");
-				return "/views/login-error.jsp";
+			// もし、すでに同じ会員IDがログインしていたら
+			if (loginUsersMap.containsKey(memberId)) {
+				// マップから古いデータを取り出しつつ消去する
+				HttpSession oldSession = loginUsersMap.remove(memberId);
+				
+				// 過去のセッションが存在し、かつ「自分とは違う別ブラウザ」のときだけ爆破する
+				if (oldSession != null && !oldSession.getId().equals(session.getId())) {
+					try {
+						// 古い別セッションを強制終了（キックアウト）させる！
+						oldSession.invalidate();
+						System.out.println("--- [ログ] 別の端末の古いセッションをキックアウトしました: " + memberId);
+					} catch (IllegalStateException e) {
+						// 既にセッションが切れている場合は無視してOK
+					}
+				}
 			}
 
-			// ログイン登録
-			loginUsers.add(memberId);
+			// 今回新しくログインしたユーザーのIDと、現在のセッション本体をペアで登録する
+			loginUsersMap.put(memberId, session);
+			appScope.setAttribute("loginUsersMap", loginUsersMap);
 
-			//更新したログイン中ユーザー情報をアプリケーションスコープ（サーバー全体で共有される領域）に保存する
-			application.setAttribute("loginUsers", loginUsers);
-
-			//セッションにユーザー情報保存
-			session.setAttribute("user", user);
+			// セッションの引き出し"user"にDBから連れてきたユーザー情報保存
+			session.setAttribute("user", dbUser);
 
 			return "/views/user-menu.jsp";
 		}
 
-		//ログイン失敗
-		request.setAttribute(
-				"message",
-				"IDまたはパスワードが違います");
+		// ログイン失敗時
+		request.setAttribute("message", "IDまたはパスワードが違います");
 
 		return "/views/login-error.jsp";
 	}

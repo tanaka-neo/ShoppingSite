@@ -26,7 +26,7 @@
         </form>
 
   
-        <input type="button" value="入力画面へ戻る" class="button button-secondary" onclick="history.back()"> 
+        <input type="button"  value="入力画面へ戻る" class="button button-secondary" onclick="history.back()"> 
     </div>
 </div>
 

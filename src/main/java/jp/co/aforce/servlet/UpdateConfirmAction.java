@@ -10,11 +10,11 @@ import jakarta.servlet.http.HttpSession;
 import jp.co.aforce.beans.Users;
 import tool.Action;
 
-public class RegisterConfirmAction extends Action {
+public class UpdateConfirmAction extends Action {
 	public String execute(
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		// 登録画面の入力フォームから送信された値を取得
+		// 変更画面の入力フォームから送信された値を取得（IDは変更不可の場合が多いですが一応取得）
 		String memberId = request.getParameter("memberId");
 		String password = request.getParameter("password");
 		String lastName = request.getParameter("lastName");
@@ -22,7 +22,6 @@ public class RegisterConfirmAction extends Action {
 		String address = request.getParameter("address");
 		String mailAddress = request.getParameter("mailAddress");
 
-		// エラーメッセージを全部詰め込むためのバケツ（リスト）
 		List<String> errorList = new ArrayList<>();
 
 		// 1. 未入力チェック
@@ -32,40 +31,25 @@ public class RegisterConfirmAction extends Action {
 				|| firstName == null || firstName.isBlank()
 				|| address == null || address.isBlank()
 				|| mailAddress == null || mailAddress.isBlank()) {
-
+			
 			errorList.add("未入力の項目があります");
 		}
 
-		// 2. 正規表現チェック（未入力エラーがない場合のみ高度なチェックをする）
+		// 2. 正規表現チェック（
 		if (errorList.isEmpty()) {
-			String alphanumericPattern = "^[a-zA-Z0-9]+$"; // 半角英数字のみ
+			String alphanumericPattern = "^[a-zA-Z0-9]+$";
 
-			// IDのチェック
-			if (!memberId.matches(alphanumericPattern)) {
-				errorList.add("IDは半角英数字で入力してください");
-			}
-
-			// パスワードのチェック
 			if (!password.matches(alphanumericPattern)) {
 				errorList.add("パスワードは半角英数字で入力してください");
 			}
-
-			//これ反応しない↓
-			
-			// メールアドレスのチェック
-			if (mailAddress.matches(".*[^\\x01-\\x7E].*") || !mailAddress.contains("@")) {
-				errorList.add("メールアドレスの形式が正しくありません（全角文字・ひらがなは使用できません）");
-			}
-
 		}
 
-		// 3. エラーが1つでもあれば、すべてまとめて入力画面に戻す
+		// 3. エラーがあれば、変更入力画面に戻す
 		if (!errorList.isEmpty()) {
-			// エラーメッセージを「<br>」で繋げて1つの文章にする
 			String fullMessage = String.join("<br>", errorList);
-			request.setAttribute("message", fullMessage); // 今まで通りの「message」に入れる
+			request.setAttribute("message", fullMessage);
 
-			// 入力された値を保持して入力画面に戻す
+			// 入力値を保持して戻す
 			Users inputUser = new Users();
 			inputUser.setMemberId(memberId);
 			inputUser.setPassword(password);
@@ -73,14 +57,14 @@ public class RegisterConfirmAction extends Action {
 			inputUser.setFirstName(firstName);
 			inputUser.setAddress(address);
 			inputUser.setMailAddress(mailAddress);
-
+			
 			HttpSession session = request.getSession();
-			session.setAttribute("user", inputUser);
+			session.setAttribute("updateUser", inputUser); // 更新用はupdateUserという名前に
 
-			return "/views/register.jsp";
+			return "/views/update.jsp"; 
 		}
 
-		// 全ての入力が正常だった場合は確認画面へ進む
+		// 4. 正常ならセッションに保存して、更新確認画面へ進む
 		Users confirmedUser = new Users();
 		confirmedUser.setMemberId(memberId);
 		confirmedUser.setPassword(password);
@@ -90,8 +74,8 @@ public class RegisterConfirmAction extends Action {
 		confirmedUser.setMailAddress(mailAddress);
 
 		HttpSession session = request.getSession();
-		session.setAttribute("user", confirmedUser);
-
-		return "/views/register-confirm.jsp";
+		session.setAttribute("updateUser", confirmedUser);
+		
+		return "/views/profile-update-confirm.jsp"; 
 	}
 }
