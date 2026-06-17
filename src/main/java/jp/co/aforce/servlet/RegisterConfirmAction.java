@@ -5,93 +5,83 @@ import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import jp.co.aforce.beans.Users;
 import tool.Action;
 
 public class RegisterConfirmAction extends Action {
-	public String execute(
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		// 登録画面の入力フォームから送信された値を取得
-		String memberId = request.getParameter("memberId");
-		String password = request.getParameter("password");
-		String lastName = request.getParameter("lastName");
-		String firstName = request.getParameter("firstName");
-		String address = request.getParameter("address");
-		String mailAddress = request.getParameter("mailAddress");
+        String memberId = request.getParameter("memberId");
+        String password = request.getParameter("password");
+        String lastName = request.getParameter("lastName");
+        String firstName = request.getParameter("firstName");
+        String address = request.getParameter("address");
+        String mailAddress = request.getParameter("mailAddress");
 
-		// エラーメッセージを全部詰め込むためのバケツ（リスト）
-		List<String> errorList = new ArrayList<>();
+        // 入力された値をビーンズに詰める
+        Users inputUser = new Users();
+        inputUser.setMemberId(memberId);
+        inputUser.setPassword(password);
+        inputUser.setLastName(lastName);
+        inputUser.setFirstName(firstName);
+        inputUser.setAddress(address);
+        inputUser.setMailAddress(mailAddress);
 
-		// 1. 未入力チェック
-		if (memberId == null || memberId.isBlank()
-				|| password == null || password.isBlank()
-				|| lastName == null || lastName.isBlank()
-				|| firstName == null || firstName.isBlank()
-				|| address == null || address.isBlank()
-				|| mailAddress == null || mailAddress.isBlank()) {
+        List<String> errorList = new ArrayList<>();
 
-			errorList.add("未入力の項目があります");
-		}
+        // 1. 必須（未入力）チェック
+        if (memberId == null || memberId.isBlank() || password == null || password.isBlank() ||
+            lastName == null || lastName.isBlank() || firstName == null || firstName.isBlank() ||
+            address == null || address.isBlank() || mailAddress == null || mailAddress.isBlank()) {
+            errorList.add("未入力の項目があります。");
+        }
 
-		// 2. 正規表現チェック（未入力エラーがない場合のみ高度なチェックをする）
-		if (errorList.isEmpty()) {
-			String alphanumericPattern = "^[a-zA-Z0-9]+$"; // 半角英数字のみ
+        // 必須チェックがOKなら詳細チェック
+        if (errorList.isEmpty()) {
+            // 2. 形式チェック（半角英数字）
+            if (!memberId.matches("^[a-zA-Z0-9]+$")) {
+                errorList.add("会員IDは半角英数字で入力してください。");
+            }
+            if (!password.matches("^[a-zA-Z0-9]+$")) {
+                errorList.add("パスワードは半角英数字で入力してください。");
+            }
+            
+            // 3.文字数制限チェック
+            if (memberId.length() > 10) {
+                errorList.add("会員IDは10文字以内で入力してください。");
+            }
+            if (password.length() < 8 || password.length() > 32) {
+                errorList.add("パスワードは8文字以上32文字以内で入力してください。");
+            }
+            if (lastName.length() > 32 || firstName.length() > 32) {
+                errorList.add("お名前（名字・名前）はそれぞれ32文字以内で入力してください。");
+            }
+            if (address.length() > 128) {
+                errorList.add("住所は128文字以内で入力してください。");
+            }
+            // メールアドレスの128文字制限チェックを追加
+            if (mailAddress.length() > 128) {
+                errorList.add("メールアドレスは128文字以内で入力してください。");
+            }
+            
+            // 4. メールアドレス形式チェック（アットマークなどの構文）
+            String emailPattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+            if (!mailAddress.matches(emailPattern)) {
+                errorList.add("メールアドレスの形式が正しくありません。");
+            }
+        }
 
-			// IDのチェック
-			if (!memberId.matches(alphanumericPattern)) {
-				errorList.add("IDは半角英数字で入力してください");
-			}
+        // エラーがある場合は新規登録画面に入力内容を持たせて戻す
+        if (!errorList.isEmpty()) {
+            request.setAttribute("errors", errorList);
+            request.setAttribute("formUser", inputUser); 
+            return "/views/register.jsp"; 
+        }
 
-			// パスワードのチェック
-			if (!password.matches(alphanumericPattern)) {
-				errorList.add("パスワードは半角英数字で入力してください");
-			}
-
-			//これ反応しない↓
-			
-			// メールアドレスのチェック
-			if (mailAddress.matches(".*[^\\x01-\\x7E].*") || !mailAddress.contains("@")) {
-				errorList.add("メールアドレスの形式が正しくありません（全角文字・ひらがなは使用できません）");
-			}
-
-		}
-
-		// 3. エラーが1つでもあれば、すべてまとめて入力画面に戻す
-		if (!errorList.isEmpty()) {
-			// エラーメッセージを「<br>」で繋げて1つの文章にする
-			String fullMessage = String.join("<br>", errorList);
-			request.setAttribute("message", fullMessage); // 今まで通りの「message」に入れる
-
-			// 入力された値を保持して入力画面に戻す
-			Users inputUser = new Users();
-			inputUser.setMemberId(memberId);
-			inputUser.setPassword(password);
-			inputUser.setLastName(lastName);
-			inputUser.setFirstName(firstName);
-			inputUser.setAddress(address);
-			inputUser.setMailAddress(mailAddress);
-
-			HttpSession session = request.getSession();
-			session.setAttribute("user", inputUser);
-
-			return "/views/register.jsp";
-		}
-
-		// 全ての入力が正常だった場合は確認画面へ進む
-		Users confirmedUser = new Users();
-		confirmedUser.setMemberId(memberId);
-		confirmedUser.setPassword(password);
-		confirmedUser.setLastName(lastName);
-		confirmedUser.setFirstName(firstName);
-		confirmedUser.setAddress(address);
-		confirmedUser.setMailAddress(mailAddress);
-
-		HttpSession session = request.getSession();
-		session.setAttribute("user", confirmedUser);
-
-		return "/views/register-confirm.jsp";
-	}
+        // 正常なら登録確認画面へ進む
+        request.getSession().setAttribute("registerUser", inputUser);
+        return "/views/register-confirm.jsp"; 
+    }
 }

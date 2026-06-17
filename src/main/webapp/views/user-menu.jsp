@@ -5,27 +5,24 @@ if (session.getAttribute("user") == null) {
 	return;
 }
 %>
+
+<%@ page import="jp.co.aforce.beans.Users" %>
+
+<%
+Users user = (Users)session.getAttribute("user");
+%>
+
 <%@include file="../header.jsp"%>
 <div class="container">
 	<div class="card">
-		<p class="message">ようこそ、${user.lastName}さん！</p>
+	
+		<% if (user != null) { %>
+			<p class="message">ようこそ、<%= user.getLastName() %>さん！</p>
+		<% } else { %>
+			<p class="message">ようこそ、いちごECサイトへ！</p>
+			<p>ログインすると購入や会員機能をご利用いただけます。</p>
+		<% } %>
 
-		<input type="button" value="修正" class="button"
-			onclick="location.href='${pageContext.request.contextPath}/views/update.jsp'">
-
-		<form
-			action="${pageContext.request.contextPath}/jp/co/aforce/servlet/Delete.action"
-			method="post">
-			<!--			confirmはブラウザ標準の「OK」「キャンセル」付きの確認用ポップアップ画面を表示するJavaScriptの機能-->
-			<input type="submit" value="削除" class="button button-danger"
-				onclick="return confirm('本当に削除しますか？')">
-		</form>
-
-		<form
-			action="${pageContext.request.contextPath}/jp/co/aforce/servlet/Logout.action"
-			method="post">
-			<input type="submit" value="ログアウト" class="button button-secondary">
-		</form>
 	</div>
 </div>
 <%@include file="../footer.jsp"%>

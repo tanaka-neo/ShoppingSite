@@ -1,34 +1,47 @@
-<%@page contentType="text/html; charset=UTF-8"%>
-<%@include file="../header.jsp"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@include file="../mini-header.jsp"%>
 
 <div class="container">
 	<div class="card">
-		<h1>会員情報登録</h1>
+		<h1>新規会員登録</h1>
 
-        <% if (request.getAttribute("message") != null) { %>
-            <div class="message message-error" style="text-align: left; margin-bottom: 20px;">
-                <p style="margin: 5px 0;">⚠️ ${message}</p>
-            </div>
-        <% } %>
+		<c:if test="${not empty errors}">
+			<div class="message message-error">
+				<c:forEach var="error" items="${errors}">
+					<p>${error}</p>
+				</c:forEach>
+			</div>
+		</c:if>
 
 		<form
 			action="${pageContext.request.contextPath}/jp/co/aforce/servlet/RegisterConfirm.action"
 			method="post">
-			<label>ID</label>
-			<!--            requiredはブラウザ上で自動的に未入力を防いでくれる-->
-			<input type="text" name="memberId" required> <label>パスワード</label>
-			<input type="password" name="password" required> <label>名字</label>
-			<input type="text" name="lastName" required> <label>名前</label>
-			<input type="text" name="firstName" required> <label>住所</label>
-			<input type="text" name="address" required> <label>メールアドレス</label>
-			<input type="email" name="mailAddress" required> <input
-				type="submit" value="確認画面へ" class="button">
 
+			<label>会員ID</label> <input type="text" name="memberId"
+				value="${formUser.memberId}"> <label>パスワード</label> <input
+				type="password" id="password" name="password"
+				value="${formUser.password}">
+			<div style="text-align: left; font-size: 12px; color: #415a77;">
+				<input type="checkbox" id="togglePassword"> パスワードを表示する
+			</div>
+			
+			
+			<label>名字</label> <input type="text" name="lastName"
+				value="${formUser.lastName}"> <label>名前</label> <input
+				type="text" name="firstName" value="${formUser.firstName}">
+
+			<label>住所</label> <input type="text" name="address"
+				value="${formUser.address}"> <label>メールアドレス</label> <input
+				type="text" name="mailAddress" value="${formUser.mailAddress}">
+
+			<input type="submit" class="button" value="確認画面へ">
 		</form>
 
-		<input type="button" class="button button-secondary" value="ログイン画面へ戻る"
+		<input type="button" class="button button-secondary" value="戻る"
 			onclick="location.href='${pageContext.request.contextPath}/views/login-in.jsp'">
+
 	</div>
 </div>
-
+<script src="${pageContext.request.contextPath}/js/script.js"></script>
 <%@include file="../footer.jsp"%>

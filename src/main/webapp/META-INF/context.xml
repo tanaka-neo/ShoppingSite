@@ -13,3 +13,11 @@
 		password="a-hirotainiya2311"
 	/>
 </Context>
+
+<!--<Context>-->
+<!--  <Resource name="jdbc/shoppingsite_tanakaneo" auth="Container" type="javax.sql.DataSource"-->
+<!--    driverClassName="com.mysql.cj.jdbc.Driver"-->
+<!--    url="jdbc:mysql://newemployeetraining2026forjava.crm2yqee80o7.ap-northeast-1.rds.amazonaws.com:3306/shoppingsite_tanakaneo"-->
+<!--    username="admin" password="aforce2868"-->
+<!--    maxActive="20" maxIdle="10" maxWait="-1"/>-->
+<!--</Context>-->

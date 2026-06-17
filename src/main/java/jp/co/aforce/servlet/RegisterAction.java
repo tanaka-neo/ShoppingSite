@@ -15,7 +15,7 @@ public class RegisterAction extends Action {
 		HttpSession session = request.getSession();
 
 		//セッションの引き出し"user”から確認画面で預けた入力データを取得
-		Users sessionUser = (Users) session.getAttribute("user");
+		Users sessionUser = (Users) session.getAttribute("registerUser");
 
 		// セッションの中身がnullなら入力画面へ戻す
 		if (sessionUser == null) {

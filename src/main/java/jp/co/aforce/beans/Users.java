@@ -9,6 +9,7 @@ public class Users implements java.io.Serializable{
 	private String mailAddress;
 	private String lastName;
 	private String firstName;
+	private int role;
 	
 	
 	
@@ -30,6 +31,10 @@ public class Users implements java.io.Serializable{
 	public String getFirstName() {
 		return firstName;
 	}
+	public int getRole() {
+		return role;
+	}
+	
 	
 	public void setMemberId(String memberId) {
 		this.memberId=memberId;
@@ -48,5 +53,8 @@ public class Users implements java.io.Serializable{
 	}
 	public void setFirstName(String firstName) {
 		this.firstName=firstName;
+	}
+	public void setRole(int role) {
+		this.role=role;
 	}
 }

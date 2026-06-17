@@ -1,11 +1,20 @@
 <%@page contentType="text/html; charset=UTF-8"%>
-<%@include file="../header.jsp"%>
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/style.css">
+	
+<!DOCTYPE html>
+<html>
+<head>
+<title>shoppingsite</title>
+</head>
+<body>
 
 <div class="container">
 
 	<div class="card">
 
-		<h1>sign in</h1>
+		<h1>ログイン</h1>
 
 		<form
 			action="${pageContext.request.contextPath}/jp/co/aforce/servlet/Login.action"
@@ -27,4 +36,5 @@
 
 	</div>
 </div>
-<%@include file="../footer.jsp"%>
+</body>
+</html>

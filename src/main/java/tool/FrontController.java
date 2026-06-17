@@ -12,15 +12,26 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = { "*.action" })
 public class FrontController extends HttpServlet {
 
+	
+	
 	public void doPost(
 			HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		PrintWriter out = response.getWriter();
 		try {
-
+			System.out.println("HIT: " + request.getServletPath());
 			//jp/cp/aforce/servlet/Login.actionなど、を取得し/を.に変換Aを.aに変換jp.co.aforce.servlet.LoginActionやLogoutActionになり、URLからクラス名にしている
 			String path = request.getServletPath().substring(1);
+			
 			String name = path.replace(".a", "A").replace('/', '.');
-
+			
+			// 組み立てた名前にパッケージ名が含まれていない場合、自動で頭に付け足す
+			if (!name.startsWith("jp.co.aforce.servlet.")) {
+			    name = "jp.co.aforce.servlet." + name;
+			}
+			
+			System.out.println("SERVLET PATH: " + request.getServletPath());
+			System.out.println("CLASS NAME: " + name);
+			
 			//Action action =
 			//new LoginAction();などと同じ状態。ActionオブジェクトLoginActionやLogoutActionなど、、を生成
 			Action action = (Action) Class.forName(name).getDeclaredConstructor().newInstance();
@@ -38,3 +49,4 @@ public class FrontController extends HttpServlet {
 		doPost(request, response);
 	}
 }
+

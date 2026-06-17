@@ -8,38 +8,42 @@ import jp.co.aforce.beans.Users;
 
 public class UsersDAO extends DAO {
 
-	//	ログイン用
+	//ログイン用
 	public Users search(String memberId, String password)
 			throws Exception {
-		//	検索結果を格納するUsersオブジェクト。ユーザーが見つからない場合はnullのまま
+		//検索結果を格納するUsersオブジェクト。ユーザーが見つからない場合はnullのまま
 		Users users = null;
 
-		//	Tomcatに登録されたjdbc/shoppingsite_tanakaneoという設定からDBへ接続
+		//Tomcatに登録されたjdbc/shoppingsite_tanakaneoという設定からDBへ接続
 		Connection con = getConnection();
 
-		//	SQLを実行するためのオブジェクト
+		//SQLを実行するためのオブジェクト
 		PreparedStatement st;
-		//	入力値と一致するユーザを検索するSqL
+		//入力値と一致するユーザを検索するSqL
 		st = con.prepareStatement(
 				"select * from users where MEMBER_ID=? and PASSWORD=?");
 		st.setString(1, memberId);
 		st.setString(2, password);
-		//	SQLを実行して検索結果を取得
+		//SQLを実行して検索結果を取得
 		ResultSet rs = st.executeQuery();
 
 		//	成功時の実行
 		while (rs.next()) {
-			//	　　Beanを生成
+			//Beanを生成
 			users = new Users();
-			//		Usersオブジェクトに格納
+			//DBの値をUsersオブジェクト（Bean）に格納
 			users.setMemberId(rs.getString("MEMBER_ID"));
-			//		ログイン後もパスワードを持ち続ける必要はないかも？
+			//ログイン後もパスワードを持ち続ける必要はないかも？
 			users.setPassword(rs.getString("PASSWORD"));
 			users.setAddress(rs.getString("ADDRESS"));
 			users.setMailAddress(rs.getString("MAIL_ADDRESS"));
 			users.setLastName(rs.getString("LAST_NAME"));
 			users.setFirstName(rs.getString("FIRST_NAME"));
+			users.setRole(rs.getInt("ROLE"));
+
 		}
+		//リザルトセットとSQL実行オブジェクトとDB接続を閉じる
+		rs.close();
 		st.close();
 		con.close();
 		return users;
@@ -83,7 +87,7 @@ public class UsersDAO extends DAO {
 
 		// INSERT文を準備（? は後で値を入れる「プレースホルダ」）
 		PreparedStatement st = con.prepareStatement(
-				"INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)");
+				"INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 		// 1番目の ? に memberId をセット
 		st.setString(1, users.getMemberId());
@@ -103,6 +107,10 @@ public class UsersDAO extends DAO {
 		// 6番目の ? に mailAddress（メールアドレス）をセット
 		st.setString(6, users.getMailAddress());
 
+		//7番目の？にrole（権限）をセット
+		st.setInt(7, 0); //role=0
+		
+		
 		// SQLを実行（INSERTなので executeUpdate）
 		// 戻り値は「何件登録されたか」
 		int line = st.executeUpdate();

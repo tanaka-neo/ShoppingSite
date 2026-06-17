@@ -1,6 +1,6 @@
 package jp.co.aforce.servlet;
 
-import java.util.Set;
+import java.util.Map;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,34 +11,28 @@ import jp.co.aforce.beans.Users;
 import tool.Action;
 
 public class LogoutAction extends Action {
-	public String execute(
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		//既存のセッションを取得（存在しなければ作らない）
-		HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(false);
 
-		//ログアウト処理
-		if (session != null) {
+        if (session != null) {
+            Users user = (Users) session.getAttribute("user");
+            
+            if (user != null) {
+                ServletContext appScope = session.getServletContext();
+                @SuppressWarnings("unchecked")
+                Map<String, HttpSession> loginUsersMap = (Map<String, HttpSession>) appScope.getAttribute("loginUsersMap");
+                
+                // ★ログイン時と同じマップから、自分のユーザーIDのデータを消去する
+                if (loginUsersMap != null) {
+                    loginUsersMap.remove(user.getMemberId());
+                }
+            }
+            // セッションを完全に無効化
+            session.invalidate();
+        }
 
-			//セッションからログイン中のユーザー情報を獲得する
-			Users user = (Users) session.getAttribute("user");
-			//アプリケーションスコープの取得
-			ServletContext application = session.getServletContext();
-
-			//ログイン中一覧取得
-			Set<String> loginUsers = (Set<String>) application.getAttribute("loginUsers");
-
-			//ログイン中のユーザー一覧と、セッションのユーザー情報が両方存在する場合のみ処理
-			if (loginUsers != null && user != null) {
-
-				loginUsers.remove(user.getMemberId());
-				//更新したログイン中ユーザー一覧をアプリケーションスコープに再保存する。
-				application.setAttribute("loginUsers", loginUsers);
-			}
-			//セッションを破棄
-			session.invalidate();
-		}
-
-		return "/views/login-in.jsp";
-	}
+        return "/views/login-in.jsp";
+    }
 }

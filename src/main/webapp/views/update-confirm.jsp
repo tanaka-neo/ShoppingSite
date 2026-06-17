@@ -21,7 +21,7 @@
 				<input type="hidden" name="lastName" value="${updateUser.lastName}">
 				<input type="hidden" name="firstName" value="${updateUser.firstName}">
 				<input type="hidden" name="address" value="${updateUser.address}">
-				<input type="hidden" name="mailAddress" value="${updateUser.mailAddress}">
+				<input type="hidden" name="mailAddress" value="${updateUser.mailAddress}" autocomplete="off">
 
 				<input type="submit" value="更新する" class="button">
 			</form>
