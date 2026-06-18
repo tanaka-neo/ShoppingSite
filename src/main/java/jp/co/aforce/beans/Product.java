@@ -13,6 +13,8 @@ public class Product implements java.io.Serializable{
     private int berrySize;
     private String origin;
     private String volume;
+    private int isDeleted;
+    
 
 	public String getProductId() {
 		return productId;
@@ -46,6 +48,9 @@ public class Product implements java.io.Serializable{
 	}
 	public String getVolume() {
 		return volume;
+	}
+	public int getIsDeleted() {
+		return isDeleted;
 	}
 	
 	
@@ -81,5 +86,8 @@ public class Product implements java.io.Serializable{
 	}
 	public void setVolume(String volume) {
 		this.volume=volume;	
+	}
+	public void setIsDeleted(int isDeleted) {
+		this.isDeleted=isDeleted;
 	}
 }

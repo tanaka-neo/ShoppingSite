@@ -16,40 +16,37 @@
 			</div>
 		</c:if>
 
-		<form
-			action="${pageContext.request.contextPath}/jp/co/aforce/servlet/UpdateConfirm.action"
-			method="post" autocomplete="off">
+		<form action="${pageContext.request.contextPath}/jp/co/aforce/servlet/UpdateConfirm.action" method="post" autocomplete="off">
 
-			<label>ID</label> <input type="text" name="memberId"
-				value="${user.memberId}" readonly> <label>パスワード
-				(半角英数字8～32文字)</label>
-			<div style="position: relative; margin-bottom: 20px;">
-				<input type="password" id="password" name="password"
-					value="${user.password}" style="margin-bottom: 5px;">
+			<label>会員ID</label>
+			<input type="text" name="memberId" value="${user.memberId}" readonly>
 
-				<div style="text-align: left; font-size: 12px; color: #415a77;">
-					<input type="checkbox" id="togglePassword"> パスワードを表示する
-				</div>
+			<label for="password">パスワード</label>
+			<input type="password" id="password" name="password" value="${user.password}" required placeholder="8文字以上32文字以下の半角英数字" style="margin-bottom: 5px;">
 
-				<span id="passwordError"
-					style="color: #e07a5f; font-size: 12px; display: block; text-align: left; font-weight: bold; margin-top: 5px;"></span>
+			<div style="text-align: left; font-size: 12px; color: #415a77; margin-bottom: 20px;">
+				<input type="checkbox" id="togglePassword"> パスワードを表示する
 			</div>
 
-			<label>名字 (32文字以内)</label> <input type="text" name="lastName"
-				value="${user.lastName}"> <label>名前 (32文字以内)</label> <input
-				type="text" name="firstName" value="${user.firstName}"> <label>住所
-				(128文字以内)</label> <input type="text" name="address" value="${user.address}">
+			<span id="passwordError" style="color: #e07a5f; font-size: 12px; display: block; text-align: left; font-weight: bold; margin-top: 5px;"></span>
 
-			<label>メールアドレス</label> <input type="email" name="mailAddress"
-				value="${user.mailAddress}"> <input type="submit"
-				class="button" value="確認画面へ">
+			<label>名字 (32文字以内)</label>
+			<input type="text" name="lastName" value="${user.lastName}" required placeholder="例：一護">
+
+			<label>名前 (32文字以内)</label>
+			<input type="text" name="firstName" value="${user.firstName}" required placeholder="例：太郎">
+
+			<label>住所(128文字以内)</label>
+			<input type="text" name="address" value="${user.address}" required placeholder="例：東京都千代田区飯田橋1-2-3">
+
+			<label>メールアドレス</label>
+			<input type="email" name="mailAddress" value="${user.mailAddress}" required placeholder="例：strawberry@company.com">
+
+			<input type="submit" class="button" value="確認画面へ">
 
 		</form>
 
-		<input type="button" class="button button-secondary" value="戻る"
-			onclick="location.href='${pageContext.request.contextPath}/views/user-menu.jsp'">
+		<input type="button" class="button button-secondary" value="戻る" onclick="location.href='${pageContext.request.contextPath}/views/user-menu.jsp'" style="margin-top: 10px;">
 
-	</div>
-</div>
-<script src="${pageContext.request.contextPath}/js/script.js"></script>
+	</div> </div> <script src="${pageContext.request.contextPath}/js/script.js"></script>
 <%@include file="../footer.jsp"%>

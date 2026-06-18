@@ -306,3 +306,14 @@ input[type="email"]:focus {
     color: #ff4d6d;
     font-weight: bold;
 }
+
+/* =========================
+   商品管理画面（追加）
+========================= */
+.admin-product-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover; /* 縦横比が違う画像でも正方形に綺麗に収める魔法のプロパティにゃ */
+    border-radius: 6px;
+    border: 1px solid #ffd1dc;
+}
