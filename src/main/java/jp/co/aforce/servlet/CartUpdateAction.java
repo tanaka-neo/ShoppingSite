@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import jp.co.aforce.beans.CartItem;
+import jp.co.aforce.beans.Users;
 import tool.Action;
 
 public class CartUpdateAction extends Action {
@@ -16,14 +17,15 @@ public class CartUpdateAction extends Action {
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		// セッション取得
+
 		HttpSession session = request.getSession(false);
+		Users user = (session != null) ? (Users) session.getAttribute("user") : null;
 
-		// 未ログインならログイン画面へ
-		if (session == null || session.getAttribute("user") == null) {
-			return "/views/login-in.jsp";
+		//ログインしていない（ゲスト状態）なら、ログイン画面へ
+		if (user == null) {
+		    return "/views/login-in.jsp"; 
 		}
-
+		
 		// パラメータ取得
 		String productId = request.getParameter("productId");
 		int quantity = Integer.parseInt(request.getParameter("quantity"));

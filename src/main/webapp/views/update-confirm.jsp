@@ -1,6 +1,13 @@
 <%@page contentType="text/html; charset=UTF-8"%>
 <%@include file="../header.jsp"%>
-
+<%
+// JSP側でのセッションバリデーション
+Users sessionUser = (Users) session.getAttribute("user");
+if (sessionUser == null) {
+    response.sendRedirect(request.getContextPath() + "/views/login-in.jsp");
+    return;
+}
+%>
 <div class="container">
 	<div class="card">
 		<h1>変更内容の確認</h1>

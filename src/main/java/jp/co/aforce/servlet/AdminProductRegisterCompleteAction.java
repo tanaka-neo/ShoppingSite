@@ -15,14 +15,15 @@ public class AdminProductRegisterCompleteAction extends Action {
     public String execute(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-    	
-		HttpSession session = request.getSession();
-		Users user = (Users) session.getAttribute("user");
-		//管理者以外はアクセス禁止
-		if (user == null || user.getRole() != 1) {
-			return "/views/login-error.jsp";
-		}
-    	
+        
+    	HttpSession session = request.getSession(false);
+    	Users user = (session != null) ? (Users) session.getAttribute("user") : null;
+
+    	//ログインしていない、または、管理者（role==1）じゃないならはじく
+    	if (user == null || user.getRole() != 1) {
+    	    request.setAttribute("message", "管理者権限が必要です。ログインし直してください。");
+    	    return "/views/login-in.jsp"; 
+    	}
 
         // 1. 確認画面の隠しフィールド（hidden）から送信されたデータを取得
         // ※もし商品ID（productId）も画面から送る場合はここを有効にしてください
@@ -32,6 +33,13 @@ public class AdminProductRegisterCompleteAction extends Action {
         int stock = Integer.parseInt(request.getParameter("stock"));
         String description = request.getParameter("description");
         String imagePath = request.getParameter("imagePath");
+        
+        
+        System.out.println("--- [デバッグ] 完了画面が受け取った商品名: " + productName);
+        System.out.println("--- [デバッグ] 完了画面が受け取った画像パス: " + imagePath);
+        
+        
+        
         
         // 隠しフィールドの固定パラメーター
         int sweetness = Integer.parseInt(request.getParameter("sweetness"));

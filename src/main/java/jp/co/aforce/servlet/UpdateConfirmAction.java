@@ -14,10 +14,12 @@ public class UpdateConfirmAction extends Action {
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		//セッションチェック
 		HttpSession session = request.getSession(false);
-		if (session == null || session.getAttribute("user") == null) {
-			return "/views/login-in.jsp";
+		Users user = (session != null) ? (Users) session.getAttribute("user") : null;
+		//ログインしていない（ゲスト状態）なら、ログイン画面へ
+		if (user == null) {
+		    request.setAttribute("message", "この機能を利用するにはログインが必要です。");
+		    return "/views/login-in.jsp"; 
 		}
 
 		String memberId = request.getParameter("memberId");
@@ -57,7 +59,7 @@ public class UpdateConfirmAction extends Action {
 			if (lastName.length() > 32 || firstName.length() > 32) {
 				errorList.add("お名前（名字・名前）はそれぞれ32文字以内で入力してください。");
 			}
-			if (address.length() > 100) {
+			if (address.length() > 128) {
 				errorList.add("住所は100文字以内で入力してください。");
 			}
 			// 4. メールアドレスの形式チェック（不正文字ブロック）

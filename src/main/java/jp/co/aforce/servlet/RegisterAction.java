@@ -38,7 +38,7 @@ public class RegisterAction extends Action {
 
 		// 【後片付け】DB登録が済んだので、一時的にセッションに預けていた入力データを削除する
 		// （ブラウザの戻るボタンによる二重登録の防止や、メモリのお掃除のため）
-		session.removeAttribute("user");
+		session.removeAttribute("registerUser");
 
 		//　登録が成功（1件登録）した場合
 		if (insertCount > 0) {

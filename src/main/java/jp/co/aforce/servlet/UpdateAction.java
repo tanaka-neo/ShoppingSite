@@ -14,11 +14,13 @@ public class UpdateAction extends Action {
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		// 既にログインしているセッションのみ取得
 		HttpSession session = request.getSession(false);
-		// セッションが無い、またはログインしていなければ処理を通さない
-		if (session == null || session.getAttribute("user") == null) {
-			return "/views/login-in.jsp"; // ログイン画面へ戻す
+		Users user = (session != null) ? (Users) session.getAttribute("user") : null;
+
+		//ログインしていない（ゲスト状態）なら、ログイン画面へ
+		if (user == null) {
+		    request.setAttribute("message", "この機能を利用するにはログインが必要です。");
+		    return "/views/login-in.jsp"; 
 		}
 
 		// 画面の入力フォームから送られてきた変更後の値を受け取る

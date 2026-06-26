@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<%@include file="../mini-header.jsp"%>
+<%@include file="../header.jsp"%>
 
 <div class="container">
 	<div class="card">
@@ -45,5 +45,5 @@
 
 	</div>
 </div>
-<script src="${pageContext.request.contextPath}/js/script.js"></script>
+
 <%@include file="../footer.jsp"%>

@@ -33,7 +33,7 @@ public class FrontController extends HttpServlet {
 			System.out.println("CLASS NAME: " + name);
 			
 			//Action action =
-			//new LoginAction();などと同じ状態。ActionオブジェクトLoginActionやLogoutActionなど、、を生成
+			//new LoginAction();などと同じ状態。ActionオブジェクトLoginActionやLogoutActionなど、を生成
 			Action action = (Action) Class.forName(name).getDeclaredConstructor().newInstance();
 			//executeを実行、戻り値として遷移先JSPを取得
 			String url = action.execute(request, response);

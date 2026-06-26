@@ -16,13 +16,14 @@ public class AdminProductDeleteConfirmAction extends Action {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        // 1. セッションからユーザー情報を取得して、管理者チェック！
-        HttpSession session = request.getSession();
-        Users user = (Users) session.getAttribute("user");
-        
-        if (user == null || user.getRole() != 1) {
-            return "/views/login-error.jsp";
-        }
+    	HttpSession session = request.getSession(false);
+    	Users user = (session != null) ? (Users) session.getAttribute("user") : null;
+
+    	//ログインしていない、または、管理者（role==1）じゃないならはじく
+    	if (user == null || user.getRole() != 1) {
+    	    request.setAttribute("message", "管理者権限が必要です。ログインし直してください。");
+    	    return "/views/login-in.jsp"; 
+    	}
 
         // 2. 一覧画面から送られてきた商品IDを受け取る
         String productId = request.getParameter("productId");

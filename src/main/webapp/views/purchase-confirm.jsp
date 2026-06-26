@@ -2,7 +2,14 @@
 <%@ page import="java.util.List"%>
 <%@ page import="jp.co.aforce.beans.CartItem"%>
 <%@include file="../header.jsp"%>
-
+<%
+// JSP側でのセッションバリデーション
+Users sessionUser = (Users) session.getAttribute("user");
+if (sessionUser == null) {
+    response.sendRedirect(request.getContextPath() + "/views/login-in.jsp");
+    return;
+}
+%>
 <%
 List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 %>

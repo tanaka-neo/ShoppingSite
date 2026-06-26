@@ -1,6 +1,8 @@
 package jp.co.aforce.servlet;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.ServletContext;
@@ -8,7 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import jp.co.aforce.beans.CartItem;
+import jp.co.aforce.beans.Product;
 import jp.co.aforce.beans.Users;
+import jp.co.aforce.dao.ProductDAO;
 import jp.co.aforce.dao.UsersDAO;
 import tool.Action;
 
@@ -56,6 +61,63 @@ public class LoginAction extends Action {
         // 今回の新しいセッションをマップに登録して、ユーザー情報を保持
         loginUsersMap.put(memberId, session);
         session.setAttribute("user", dbUser);
+     // ユーザー情報をセッションへ保存
+        session.setAttribute("user", dbUser);
+
+        // 保留中の商品を取得
+        String pendingProductId =
+            (String) session.getAttribute("pendingProductId");
+
+        String pendingQuantity =
+            (String) session.getAttribute("pendingQuantity");
+
+        if (pendingProductId != null) {
+
+            ProductDAO productDao = new ProductDAO();
+            Product product = productDao.findById(pendingProductId);
+
+            @SuppressWarnings("unchecked")
+            List<CartItem> cart =
+                (List<CartItem>) session.getAttribute("cart");
+
+            if (cart == null) {
+                cart = new ArrayList<>();
+            }
+
+            int quantity = Integer.parseInt(pendingQuantity);
+
+            boolean exists = false;
+
+            for (CartItem item : cart) {
+                if (item.getProduct().getProductId()
+                        .equals(pendingProductId)) {
+
+                    item.setQuantity(
+                        item.getQuantity() + quantity);
+
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (!exists) {
+                CartItem item = new CartItem();
+                item.setProduct(product);
+                item.setQuantity(quantity);
+                cart.add(item);
+            }
+
+            session.setAttribute("cart", cart);
+
+            session.removeAttribute("pendingProductId");
+            session.removeAttribute("pendingQuantity");
+
+            return "/CartList.action";
+        }
+  
+        if (dbUser.getRole() == 1) {
+            return "/AdminProductList.action";
+        }
 
         return "/views/user-menu.jsp";
     }

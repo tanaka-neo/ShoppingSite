@@ -24,7 +24,7 @@ public class LogoutAction extends Action {
                 @SuppressWarnings("unchecked")
                 Map<String, HttpSession> loginUsersMap = (Map<String, HttpSession>) appScope.getAttribute("loginUsersMap");
                 
-                // ★ログイン時と同じマップから、自分のユーザーIDのデータを消去する
+                // ログイン時と同じマップから、自分のユーザーIDのデータを消去する
                 if (loginUsersMap != null) {
                     loginUsersMap.remove(user.getMemberId());
                 }
@@ -33,6 +33,6 @@ public class LogoutAction extends Action {
             session.invalidate();
         }
 
-        return "/views/login-in.jsp";
+        return "/views/user-menu.jsp";
     }
 }

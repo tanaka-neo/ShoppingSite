@@ -14,11 +14,13 @@ public class DeleteAction extends Action {
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		// 既にログインしているセッションのみ取得
+
 		HttpSession session = request.getSession(false);
-		// セッションが無い、またはログインしていなければ処理を通さない
-		if (session == null || session.getAttribute("user") == null) {
-			return "/views/login-in.jsp";
+		Users user = (session != null) ? (Users) session.getAttribute("user") : null;
+
+		//ログインしていない（ゲスト状態）なら、ログイン画面へ
+		if (user == null) {
+		    return "/views/login-in.jsp"; 
 		}
 
 		// セッションから現在ログインしているユーザーの情報を取得（誰が操作しているかを特定するため）

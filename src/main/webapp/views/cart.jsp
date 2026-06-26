@@ -2,6 +2,14 @@
 <%@ page import="java.util.List"%>
 <%@ page import="jp.co.aforce.beans.CartItem"%>
 <%@include file="../header.jsp"%>
+<%
+// JSP側でのセッションバリデーション
+Users sessionUser = (Users) session.getAttribute("user");
+if (sessionUser == null) {
+    response.sendRedirect(request.getContextPath() + "/views/login-in.jsp");
+    return;
+}
+%>
 
 <%
 List<CartItem> cart = (List<CartItem>) request.getAttribute("cart");
@@ -12,6 +20,19 @@ List<CartItem> cart = (List<CartItem>) request.getAttribute("cart");
 	<div class="card">
 
 		<h1>カート</h1>
+
+		<%-- 👇 【新設】在庫が足りなかった時のエラーメッセージ表示欄 --%>
+		<%
+		String errorMsg = (String) request.getAttribute("errorMessage");
+		if (errorMsg != null) {
+		%>
+			<div style="background-color: #fff0f1; border: 1px solid #ffccd1; color: #ff4d6d; padding: 15px; border-radius: 5px; margin-bottom: 20px; font-weight: bold;">
+				⚠️ <%= errorMsg %>
+			</div>
+		<%
+		}
+		%>
+		<%-- 👆 ここまで追加 --%>
 
 		<%
 		if (cart == null || cart.isEmpty()) {
@@ -87,5 +108,5 @@ List<CartItem> cart = (List<CartItem>) request.getAttribute("cart");
 	</div>
 
 </div>
-<script src="${pageContext.request.contextPath}/js/script.js"></script>
+
 <%@include file="../footer.jsp"%>

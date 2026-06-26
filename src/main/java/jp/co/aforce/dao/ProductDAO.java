@@ -9,15 +9,47 @@ import java.util.List;
 import jp.co.aforce.beans.Product;
 
 public class ProductDAO extends DAO {
-	
+
+	public int update(Product product) throws Exception {
+		Connection con = getConnection();
+
+		// すべての項目を新しい値に上書きする
+		String sql = "UPDATE product SET "
+				+ "product_name = ?, price = ?, stock = ?, description = ?, "
+				+ "image_path = ?, sweetness = ?, sourness = ?, berry_size = ?, "
+				+ "origin = ?, volume = ? "
+				+ "WHERE product_id = ?";
+
+		PreparedStatement st = con.prepareStatement(sql);
+
+		// SQL文の「？」の部分に、新しく入力されたデータを順番にセット
+		st.setString(1, product.getProductName());
+		st.setInt(2, product.getPrice());
+		st.setInt(3, product.getStock());
+		st.setString(4, product.getDescription());
+		st.setString(5, product.getImagePath());
+		st.setInt(6, product.getSweetness());
+		st.setInt(7, product.getSourness());
+		st.setInt(8, product.getBerrySize());
+		st.setString(9, product.getOrigin());
+		st.setString(10, product.getVolume());
+		st.setString(11, product.getProductId()); // WHERE句の「どの商品を？」にIDを指定
+
+		int line = st.executeUpdate();
+
+		st.close();
+		con.close();
+
+		return line;
+	}
+
 	//論理削除（非表示化）を行うメソッド
 	public int delete(String productId) throws Exception {
 		Connection con = getConnection();
 
 		// 完全削除ではなく、is_deletedフラグを1(非表示)に更新するSQL
 		PreparedStatement st = con.prepareStatement(
-			"UPDATE product SET is_deleted = 1 WHERE product_id = ?"
-		);
+				"UPDATE product SET is_deleted = 1 WHERE product_id = ?");
 		st.setString(1, productId);
 
 		int line = st.executeUpdate();
@@ -27,72 +59,78 @@ public class ProductDAO extends DAO {
 
 		return line;
 	}
-	
+
 	// 新しく商品を登録するメソッド
 	public int insert(Product product) throws Exception {
-        Connection con = getConnection();
+		Connection con = getConnection();
 
-        String sql = "INSERT INTO product (product_id, product_name, price, stock, description, image_path, sweetness, sourness, berry_size, origin, volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement st = con.prepareStatement(sql);
+		String sql = "INSERT INTO product (product_id, product_name, price, stock, description, image_path, sweetness, sourness, berry_size, origin, volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		PreparedStatement st = con.prepareStatement(sql);
 
-        // SQL文の「？」の部分に、Beanから取り出したデータを順番にセット
-        st.setString(1, product.getProductId());
-        st.setString(2, product.getProductName());
-        st.setInt(3, product.getPrice());
-        st.setInt(4, product.getStock());
-        st.setString(5, product.getDescription());
-        st.setString(6, product.getImagePath());
-        st.setInt(7, product.getSweetness());
-        st.setInt(8, product.getSourness());
-        st.setInt(9, product.getBerrySize());
-        st.setString(10, product.getOrigin());
-        st.setString(11, product.getVolume());
+		// SQL文の「？」の部分に、Beanから取り出したデータを順番にセット
+		st.setString(1, product.getProductId());
+		st.setString(2, product.getProductName());
+		st.setInt(3, product.getPrice());
+		st.setInt(4, product.getStock());
+		st.setString(5, product.getDescription());
+		st.setString(6, product.getImagePath());
+		st.setInt(7, product.getSweetness());
+		st.setInt(8, product.getSourness());
+		st.setInt(9, product.getBerrySize());
+		st.setString(10, product.getOrigin());
+		st.setString(11, product.getVolume());
 
-        // SQLを実行
-        int line = st.executeUpdate();
+		// SQLを実行
+		int line = st.executeUpdate();
 
-        st.close();
-        con.close();
+		st.close();
+		con.close();
 
-        return line;
-    }
-
+		return line;
+	}
 
 	// 検索キーワードと並び替え条件（昇順・降順）で検索するメソッド
 	public List<Product> search(String keyword, String sort) throws Exception {
 		List<Product> list = new ArrayList<>();
 		Connection con = getConnection();
-		
+
 		// 「WHERE 1=1」は、このあとに「AND 〜」を条件によってくっつけやすくするため
 		String sql = "SELECT * FROM product WHERE is_deleted = 0";
-		
+
 		// キーワードが入力されている場合、SQL文に条件を追加する
 		if (keyword != null && !keyword.trim().isEmpty()) {
 			// 商品名（PRODUCT_NAME）、または商品説明（DESCRIPTION）のどちらかに部分一致するか
-			sql += " AND (PRODUCT_NAME LIKE ? OR DESCRIPTION LIKE ?)";
+			sql += " AND (PRODUCT_NAME LIKE ? OR DESCRIPTION LIKE ? OR ORIGIN LIKE ?)";
 		}
-		
+
 		// 並び替え条件（sort）に合わせて、SQLに ORDER BY を追加
 		if (sort != null) {
-			if (sort.equals("price_asc")) {
-				sql += " ORDER BY PRICE ASC"; // 価格の安い順（昇順）
-			} else if (sort.equals("price_desc")) {
-				sql += " ORDER BY PRICE DESC"; // 価格の高い順（降順）
-			}
+		    if (sort.equals("price_asc")) {
+		        sql += " ORDER BY PRICE ASC";
+		    } else if (sort.equals("price_desc")) {
+		        sql += " ORDER BY PRICE DESC";
+		    } else if (sort.equals("name_asc")) {
+		        sql += " ORDER BY PRODUCT_NAME ASC";
+		    } else if (sort.equals("sweet_desc")) {
+		        sql += " ORDER BY SWEETNESS DESC";
+		    }else if (sort.equals("sour_desc")) {
+		        sql += " ORDER BY SOURNESS DESC";
+		    } 
 		}
-		
+
 		PreparedStatement st = con.prepareStatement(sql);
-		
+
 		// 検索キーワードがあった場合のみ、? に値をセットする（両方の ? に同じキーワードを当てはめる）
 		if (keyword != null && !keyword.trim().isEmpty()) {
 			// 「%キーワード%」にすることで、前後に文字があってもヒットする（あいまい検索）にする
 			st.setString(1, "%" + keyword + "%");
 			st.setString(2, "%" + keyword + "%");
+			st.setString(3, "%" + keyword + "%");
 		}
-		
+
 		// SQLを実行して結果セットを取得
 		ResultSet rs = st.executeQuery();
-		
+
 		// ループを回してデータベースから取得したデータをBeanに(Product)につめかえる
 		while (rs.next()) {
 			Product product = new Product();
@@ -111,15 +149,15 @@ public class ProductDAO extends DAO {
 			// 詰めたデータをリストに追加
 			list.add(product);
 		}
-		
+
 		// リソース解放
 		rs.close();
 		st.close();
 		con.close();
-		
+
 		return list;
 	}
-	
+
 	// 商品一覧を取得するメソッド
 	public List<Product> searchAll() throws Exception {
 		// 商品情報を格納するリストを作成
@@ -196,5 +234,42 @@ public class ProductDAO extends DAO {
 		return product;
 	}
 
+//	指定された商品の在庫数を、購入された数量分だけ引き算するメソッド
+	public int reduceStock(String productId, int quantity) throws Exception {
+		Connection con = getConnection();
 
+//		「SET stock = stock - ?」で、現在の在庫から引き算して上書き
+		String sql = "UPDATE PRODUCT SET STOCK = STOCK - ? WHERE PRODUCT_ID = ?";
+
+		PreparedStatement st = con.prepareStatement(sql);
+		st.setInt(1, quantity);     // 引く個数
+		st.setString(2, productId);  // 対象の商品ID
+
+	
+		int line = st.executeUpdate();
+
+		st.close();
+		con.close();
+
+		return line; // 1が返ってくれば成功
+	}
+	// 📦 指定された商品IDの「現在の在庫数」をピンポイントで取得するメソッド
+		public int getStock(String productId) throws Exception {
+			Connection con = getConnection();
+			String sql = "SELECT stock FROM product WHERE product_id = ?";
+			
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1, productId);
+			ResultSet rs = st.executeQuery();
+
+			int stock = 0;
+			if (rs.next()) {
+				stock = rs.getInt("stock"); // DBから現在の在庫数を取得
+			}
+
+			rs.close();
+			st.close();
+			con.close();
+			return stock;
+		}
 }

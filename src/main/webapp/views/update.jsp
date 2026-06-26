@@ -1,6 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@include file="../header.jsp"%>
-
+<%
+// JSP側でのセッションバリデーション
+Users sessionUser = (Users) session.getAttribute("user");
+if (sessionUser == null) {
+    response.sendRedirect(request.getContextPath() + "/views/login-in.jsp");
+    return;
+}
+%>
 <div class="container">
 	<div class="card">
 
@@ -48,5 +55,5 @@
 
 		<input type="button" class="button button-secondary" value="戻る" onclick="location.href='${pageContext.request.contextPath}/views/user-menu.jsp'" style="margin-top: 10px;">
 
-	</div> </div> <script src="${pageContext.request.contextPath}/js/script.js"></script>
+
 <%@include file="../footer.jsp"%>

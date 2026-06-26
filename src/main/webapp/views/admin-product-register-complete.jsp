@@ -22,5 +22,9 @@
 		
 	</div>
 </div>
-
+<script>
+    console.log("削除実行");
+    sessionStorage.removeItem('temp_imagePath');
+    console.log(sessionStorage.getItem('temp_imagePath'));
+</script>
 <%@include file="../footer.jsp"%>

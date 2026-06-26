@@ -34,6 +34,21 @@
 			</div>
 			
 			<div class="form-group">
+				<label for="sweetness">甘み (1〜5)</label>
+				<input type="number" id="sweetness" name="sweetness" min="1" max="5" required placeholder="例：5">
+			</div>
+			
+			<div class="form-group">
+				<label for="sourness">酸味 (1〜5)</label>
+				<input type="number" id="sourness" name="sourness" min="1" max="5" required placeholder="例：3">
+			</div>
+			
+			<div class="form-group">
+				<label for="berrySize">サイズ (1〜5)</label>
+				<input type="number" id="berrySize" name="berrySize" min="1" max="5" required placeholder="例：4">
+			</div>
+			
+			<div class="form-group">
 				<label for="description">商品説明</label>
 				<textarea id="description" name="description" rows="4" required placeholder="商品の特徴や詳細を入力してください"></textarea>
 			</div>
@@ -44,12 +59,8 @@
 				
 				<input type="hidden" id="imagePath" name="imagePath" required>
 				
-				<p id="fileNameDisplay" style="font-size: 14px; color: #ff4d6d; margin-top: 5px;"></p>
+				<p id="fileNameDisplay" class="file-name-display"></p>
 			</div>
-			
-			<input type="hidden" name="sweetness" value="5">
-			<input type="hidden" name="sourness" value="3">
-			<input type="hidden" name="berrySize" value="4">
 
 			<div class="button-group">
 				<button type="submit" class="button btn-submit">入力内容を確認する</button>
@@ -61,16 +72,5 @@
 	</div>
 </div>
 
-<script>
-// 「ファイルを選択」ボタンで画像が選択された際の処理
-document.getElementById('filePicker').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        // 選択されたファイルの名称を抽出し、Hiddenフィールドに設定
-        document.getElementById('imagePath').value = file.name;
-        
-        // 画面上に選択されたファイル名を表示
-        document.getElementById('fileNameDisplay').innerText = "選択済み: " + file.name;
-    }
-});
-</script>
+
+<%@include file="../footer.jsp"%>

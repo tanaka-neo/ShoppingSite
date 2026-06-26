@@ -1,319 +1,1161 @@
 /* =========================
-   Base Reset
+
+Base Reset
+
 ========================= */
+
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
 
-    background-color: #fff0f5;
+margin: 0;
 
-    background-image: radial-gradient(#ffb3c1 4px, transparent 4px);
+font-family: Arial, sans-serif;
 
-    background-size: 40px 40px;
+background-color: #fcf8f8; /* 💡 真っ白ではなく、ほんのり苺クリームのような温かみのある白 */
 
-    background-attachment: fixed;
+background-image: radial-gradient(#ffebef 3px, transparent 3px); /* 💡 ドットを極限まで薄いピンクにして上品に */
+
+background-size: 40px 40px;
+
+background-attachment: fixed;
+
+color: #332224; /* 💡 濃厚なショコラブラウン（黒より柔らかく、赤を引き立てます） */
+
 }
 
+
+
 /* =========================
-   Layout
+
+Layout
+
 ========================= */
+
 .container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+/* 💡 height: 100vh を廃止し、最低限の高さに。ヘッダー（約60px）の分を引いた計算 */
+
+min-height: calc(100vh - 60px);
+
+display: flex;
+
+justify-content: center;
+
+align-items: center;
+
+padding: 60px 20px; /* 💡 上下にしっかり余白を取ることで、ヘッダーへの侵食を物理的に防ぎます */
+
+box-sizing: border-box; /* 余白を含めたサイズ計算にするお守り */
+
 }
 
 /* =========================
-   Card（ログイン・入力系）
+
+Card（ログイン・入力系）
+
 ========================= */
+
 .card {
-    width: 380px;
-    background: rgba(255, 255, 255, 0.75);
-    padding: 50px;
-    border-radius: 16px;
-    box-shadow: 0 15px 35px rgba(255, 77, 109, 0.25);
-    text-align: center;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 182, 193, 0.5);
+
+width: 380px;
+
+background: #ffffff; /* 💡 清潔感のある白 */
+
+padding: 50px;
+
+border-radius: 16px;
+
+box-shadow: 0 10px 30px rgba(166, 22, 46, 0.06); /* 💡 影を薄くして洗練された印象に */
+
+text-align: center;
+
+border: 1px solid #f5e6e8; /* 💡 ほんのりピンクがかった上品な枠線 */
+
 }
+
+
 
 .card h1 {
-    margin-bottom: 35px;
-    font-size: 26px;
-    color: #c9184a;
+
+margin-bottom: 35px;
+
+font-size: 26px;
+
+color: #a6162e; /* 💡 深みのある気品高い「苺の赤」 */
+
 }
 
+
+
 /* =========================
-   Form
+
+Form
+
 ========================= */
+
 label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 13px;
-    color: #c9184a;
-    text-align: left;
-    font-weight: bold;
+
+display: block;
+
+margin-bottom: 6px;
+
+font-size: 13px;
+
+color: #a6162e; /* 💡 ラベルも上品な赤に */
+
+text-align: left;
+
+font-weight: bold;
+
 }
+
+
 
 input[type="text"],
+
 input[type="password"],
+
 input[type="email"] {
-    width: 100%;
-    padding: 13px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(255, 77, 109, 0.2);
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 10px;
-    font-size: 16px;
-    color: #c9184a;
-    box-sizing: border-box;
-    transition: 0.3s;
+
+width: 100%;
+
+padding: 13px;
+
+margin-bottom: 20px;
+
+border: 1px solid #e8d5d7;
+
+background: #ffffff;
+
+border-radius: 8px;
+
+font-size: 16px;
+
+color: #332224;
+
+box-sizing: border-box;
+
+transition: 0.3s;
+
 }
+
+
 
 input[type="text"]:focus,
+
 input[type="password"]:focus,
+
 input[type="email"]:focus {
-    outline: none;
-    border-color: #ff4d6d;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 8px rgba(255, 77, 109, 0.3);
+
+outline: none;
+
+border-color: #a6162e; /* 💡 フォーカス時はパッと映える赤に */
+
+box-shadow: 0 0 8px rgba(166, 22, 46, 0.15);
+
 }
 
+
+
 /* =========================
-   Button
+
+Button
+
 ========================= */
+
 .button {
-    width: 100%;
-    padding: 14px;
-    margin-top: 15px;
-    border: none;
-    border-radius: 999px;
-    background: #ff4d6d;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
+
+width: 100%;
+
+padding: 14px;
+
+margin-top: 15px;
+
+border: none;
+
+border-radius: 999px;
+
+background: #a6162e; /* 💡 主役のボタンは鮮烈な「苺の赤」 */
+
+color: #fff;
+
+font-size: 16px;
+
+font-weight: bold;
+
+cursor: pointer;
+
+transition: 0.3s;
+
+box-shadow: 0 4px 12px rgba(166, 22, 46, 0.2);
+
 }
+
+
 
 .button:hover {
-    background: #ff8fa3;
+
+background: #c71f3d; /* 💡 ほんのり明るい赤に */
+
 }
+
+
 
 .button-secondary {
-    background: #ffb3c1;
+
+background: #fff0f2; /* 💡 ほんのりピンク */
+
+color: #a6162e;
+
+border: 1px solid #f5cfd5;
+
 }
+
+
 
 .button-secondary:hover {
-    background: #ff8fa3;
-    color: #fff;
+
+background: #f5cfd5;
+
+color: #a6162e;
+
 }
+
+
 
 .button-danger {
-    background: #e07a5f;
+
+background: #d9534f;
+
 }
 
+
+
 /* =========================
-   Message
+
+Message
+
 ========================= */
+
 .message {
-    margin-top: 20px;
-    font-size: 14px;
-    font-weight: bold;
+
+margin-top: 20px;
+
+font-size: 14px;
+
+font-weight: bold;
+
 }
+
+
 
 .message-error {
-    color: #c9184a;
+
+color: #a6162e;
+
 }
+
+
 
 .message-success {
-    color: #ff4d6d;
+
+color: #c71f3d;
+
 }
 
+
+
 /* =========================
-   Confirm Table
+
+Confirm Table
+
 ========================= */
+
 .confirm-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 25px;
-    text-align: left;
-    color: #c9184a;
+
+width: 100%;
+
+border-collapse: collapse;
+
+margin-bottom: 25px;
+
+text-align: left;
+
+color: #332224;
+
 }
+
+
 
 .confirm-table th,
+
 .confirm-table td {
-    padding: 12px 5px;
-    border-bottom: 1px solid rgba(255, 77, 109, 0.15);
-    font-size: 15px;
+
+padding: 12px 5px;
+
+border-bottom: 1px solid #f5e6e8;
+
+font-size: 15px;
+
 }
+
+
 
 .confirm-table th {
-    width: 30%;
-    color: #ff4d6d;
+
+width: 30%;
+
+color: #a6162e;
+
 }
+
+
 
 /* =========================
-   Header
+
+Header
+
 ========================= */
+
 .site-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 30px;
 
-    background: linear-gradient(90deg, #ff4d6d, #ff8fa3);
-    color: white;
+display: flex;
 
-    box-shadow: 0 2px 10px rgba(255, 77, 109, 0.2);
+justify-content: space-between;
+
+align-items: center;
+
+padding: 14px 30px;
+
+background: #ffffff; /* 白ベース */
+
+border-bottom: 3px solid #a6162e; /* 下線の赤線 */
+
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+
 }
-.logo {
-    font-size: 22px;
-    font-weight: bold;
-    color: #c9184a;
+
+
+
+/* 💡 ロゴのリンク文字（いちご図鑑SHOP）の色と下線消し */
+
+.logo a {
+
+font-size: 22px;
+
+font-weight: bold;
+
+color: #a6162e;
+
+text-decoration: none;
+
 }
+
+
 
 .nav-menu {
-    display: flex;
-    gap: 12px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    align-items: center;
+
+display: flex;
+
+gap: 12px;
+
+list-style: none;
+
+margin: 0;
+
+padding: 0;
+
+align-items: center;
+
 }
+
+
+
+/* 💡 「ようこそ〜」の部分のレイアウトと文字色 */
+
+.welcome-text {
+
+color: #4a373a; /* ショコラブラウン */
+
+font-weight: bold;
+
+margin-right: 10px;
+
+display: flex;
+
+align-items: center;
+
+gap: 8px;
+
+}
+
+
+
+/* 💡 いちごマンの画像丸め設定 */
+
+.welcome-img {
+
+width: 30px;
+
+height: 30px;
+
+border-radius: 50%;
+
+}
+
+
+
+/* 💡 ナビゲーションボタンの基本形 */
 
 .nav-button {
-    display: inline-block;
-    padding: 8px 14px;
-    background: #ffffff;
-    border: 2px solid #ffb3c1;
-    border-radius: 10px;
-    text-decoration: none;
-    color: #c9184a;
-    font-weight: bold;
-    font-size: 14px;
-    transition: 0.2s;
+
+display: inline-block;
+
+padding: 8px 14px;
+
+background: #ffffff;
+
+border: 1px solid #e8d5d7;
+
+border-radius: 6px;
+
+text-decoration: none;
+
+color: #a6162e;
+
+font-weight: bold;
+
+font-size: 14px;
+
+transition: 0.2s;
+
 }
+
+
 
 .nav-button:hover {
-    background: #ffb3c1;
-    color: #ffffff;
+
+background: #fff0f2;
+
+border-color: #f5cfd5;
+
 }
 
+
+
+/* 💡 ログインボタン専用（JSPで直接指定していた色をCSSに引越し） */
+
+.nav-button.login {
+
+border-color: #a6162e;
+
+color: #a6162e;
+
+}
+
+.nav-button.login:hover {
+
+background: #a6162e;
+
+color: #ffffff;
+
+}
+
+
+
+/* 💡 ログアウトボタン専用 */
+
 .nav-button.logout {
-    border-color: #ff4d6d;
-    color: #ff4d6d;
+
+border-color: #a6162e;
+
+color: #a6162e;
+
 }
 
 .nav-button.logout:hover {
-    background: #ff4d6d;
-    color: #fff;
+
+background: #a6162e;
+
+color: #ffffff;
+
 }
+
+
+
+
 
 /* =========================
-   Mini Header
+
+商品一覧
+
 ========================= */
-.mini-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    background: #fff0f5;
-    border-bottom: 1px solid #ffd1dc;
-}
 
-.mini-header .logo {
-    font-weight: bold;
-    font-size: 18px;
-    color: #c9184a;
-}
-
-.mini-header .login-link a {
-    text-decoration: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    background: #ff4d6d;
-    color: white;
-}
-
-/* =========================
-   商品一覧（追加）
-========================= */
 .product-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
-    justify-content: center;
+
+display: flex;
+
+flex-wrap: wrap;
+
+gap: 20px;
+
+padding: 20px;
+
+justify-content: center;
+
 }
+
+
 
 .product-card {
-    width: 220px;
-    border: 1px solid #ffd1dc;
-    border-radius: 12px;
-    padding: 15px;
-    text-align: center;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(255, 77, 109, 0.15);
-    transition: 0.2s;
+
+width: 240px;
+
+border: 1px solid #f5e6e8;
+
+border-radius: 8px;
+
+padding: 15px;
+
+text-align: center;
+
+background: #fff;
+
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+
+transition: 0.2s;
+
+cursor: pointer
+
 }
+
+
 
 .product-card:hover {
-    transform: translateY(-3px);
+
+transform: translateY(-3px);
+
+border-color: #f5cfd5;
+
 }
+
+
 
 .product-image {
-    width: 180px;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
+
+width: 180px;
+
+height: 180px;
+
+object-fit: cover;
+
+border-radius: 6px;
+
+margin-bottom: 10px;
+
 }
+
+
 
 .product-price {
-    color: #ff4d6d;
-    font-weight: bold;
+
+color: #a6162e;
+
+font-weight: bold;
+
 }
+
+
 
 .product-origin {
-    font-size: 13px;
-    color: #777;
+
+font-size: 13px;
+
+color: #777;
+
 }
 
+
+
 /* =========================
-   商品詳細
+
+商品詳細
+
 ========================= */
+
 .product-detail {
-    max-width: 600px;
-    margin: 30px auto;
-    padding: 20px;
-    border: 1px solid #ffd1dc;
-    border-radius: 12px;
-    background: #fff;
+
+max-width: 600px;
+
+margin: 30px auto;
+
+padding: 20px;
+
+border: 1px solid #f5e6e8;
+
+border-radius: 8px;
+
+background: #fff;
+
+text-align: left;
+
+}
+
+.product-detail h1 {
+    text-align: center;
+}
+
+.detail-price {
     text-align: center;
 }
 
 .product-detail img {
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 10px;
+
+display: block;
+
+margin: 0 auto;
+
+width: 250px;
+
+max-width: 100%;
+
+height: 250px;
+
+object-fit: cover;
+
+border-radius: 6px;
+
 }
 
+
+
 .detail-price {
-    font-size: 20px;
-    color: #ff4d6d;
+
+font-size: 20px;
+
+color: #a6162e;
+
+font-weight: bold;
+
+}
+
+.detail-row {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 8px;
+}
+
+.label {
+    width: 120px;
+    text-align: right;
     font-weight: bold;
+    color: #a6162e;
+}
+
+.value {
+	text-align: left;
+	flex: 1;       
+	word-break: break-word;
 }
 
 /* =========================
-   商品管理画面（追加）
+
+商品管理画面
+
 ========================= */
+
 .admin-product-img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover; /* 縦横比が違う画像でも正方形に綺麗に収める魔法のプロパティにゃ */
-    border-radius: 6px;
-    border: 1px solid #ffd1dc;
+
+width: 60px;
+
+height: 60px;
+
+object-fit: cover;
+
+border-radius: 4px;
+
+border: 1px solid #e8d5d7;
+
+}
+
+
+
+/* =========================
+
+ダイナミックトップ（最新最適化版）
+
+========================= */
+
+.hero-section {
+
+width: 100%;
+
+height: 80vh;
+
+background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('../images/ichigomain22.png') center/cover no-repeat;
+
+display: flex;
+
+justify-content: center;
+
+align-items: center;
+
+text-align: center;
+
+}
+
+
+
+@keyframes fadeInUp {
+
+from {
+
+opacity: 0;
+
+transform: translateY(30px);
+
+}
+
+to {
+
+opacity: 1;
+
+transform: translateY(0);
+
+}
+
+}
+
+
+
+.hero-title {
+
+font-size: 3.5rem;
+
+color: #ffffff;
+
+text-shadow: 2px 4px 10px rgba(166, 22, 46, 0.6);
+
+margin: 0;
+
+font-weight: bold;
+
+animation: fadeInUp 2.0s ease-out forwards;
+
+}
+
+
+
+.top-content-body {
+
+max-width: 1200px;
+
+margin: 0 auto;
+
+padding: 60px 20px;
+
+}
+
+
+
+.section-title {
+
+font-size: 1.8rem;
+
+color: #a6162e;
+
+border-bottom: 2px solid #a6162e;
+
+padding-bottom: 10px;
+
+margin-bottom: 30px;
+
+text-align: left;
+
+}
+
+
+
+/* 💡 スライダー設定：これで絶対に縦並びにならず、綺麗に横スクロールします */
+
+.horizontal-slider {
+
+display: flex;
+
+gap: 20px;
+
+overflow-x: auto;
+
+padding-bottom: 15px;
+
+margin-bottom: 50px;
+
+}
+
+
+
+.horizontal-slider::-webkit-scrollbar {
+
+height: 8px;
+
+}
+
+
+
+.horizontal-slider::-webkit-scrollbar-thumb {
+
+background: #f5cfd5;
+
+border-radius: 4px;
+
+}
+
+
+
+/* 💡 スライダー内のリンクaタグがカードの邪魔をしない設定 */
+
+.slider-link {
+
+text-decoration: none;
+
+color: inherit;
+
+display: inline-block;
+
+}
+
+
+
+/* 💡 スライダー内画像の共通サイズ */
+
+.slider-img {
+
+width: 100%;
+
+height: 220px;
+
+object-fit: contain;
+
+border-radius: 8px;
+
+display: block;
+   
+margin: 0 auto;
+
+}
+
+
+
+/* 💡 おすすめいちごの、商品名テキスト */
+
+.slider-product-name {
+
+font-weight: bold;
+
+color: #a6162e; /* 上品な赤に変更 */
+
+margin-top: 10px;
+
+margin-bottom: 5px;
+
+}
+
+
+
+/* 💡 レシピカード専用のサイズ上書き設定 */
+
+.product-card.recipe-card {
+
+width: 260px;
+
+}
+
+
+
+/* 💡 レシピ画像の高さ微調整 */
+
+.slider-img.recipe-img {
+
+height: 140px;
+
+}
+
+
+
+/* 💡 レシピのテキスト */
+
+.recipe-text {
+
+font-size: 14px;
+
+font-weight: bold;
+
+color: #a6162e; /* 上品な赤に変更 */
+
+margin-top: 10px;
+
+margin-bottom: 0;
+
+}
+
+
+
+/* =========================
+
+ショップニュース & フッター
+
+========================= */
+
+.topics-list {
+
+list-style: none;
+
+padding: 0;
+
+margin: 0 0 60px 0;
+
+}
+
+
+
+.topics-item {
+
+padding: 15px 0;
+
+border-bottom: 1px dashed #f5e6e8;
+
+text-align: left;
+
+}
+
+
+
+.topics-date {
+
+color: #a6162e;
+
+font-weight: bold;
+
+margin-right: 20px;
+
+}
+
+
+
+.topics-link {
+
+color: #555555;
+
+text-decoration: none;
+
+font-weight: bold;
+
+}
+
+
+
+.topics-link:hover {
+
+color: #a6162e;
+
+}
+
+
+
+.site-footer {
+
+background: #ffffff;
+
+border-top: 2px solid #f5e6e8;
+
+padding: 40px 20px;
+
+text-align: center;
+
+color: #a6162e;
+
+}
+
+
+
+.footer-info {
+
+font-size: 14px;
+
+line-height: 1.8;
+
+margin-bottom: 20px;
+
+}
+
+
+
+.copyright {
+
+font-size: 13px;
+
+color: #baa0a3;
+
+}
+
+
+
+/* ==========================================================================
+
+11. 【修正版】管理画面のテーブルとボタンをカード内に最適化
+
+========================================================================== */
+
+/* カードの幅はそのまま（380px or 500px）でも、中身がスッキリ収まる設定 */
+
+.admin-table,
+
+.history-table {
+
+width: 100% !important;
+
+table-layout: auto; /* コンテンツに合わせて自動調整 */
+
+}
+
+
+
+/* ボタンが重ならないように、横幅の制限を解除しつつ小さくまとめる */
+
+table .button,
+
+table .nav-button {
+
+display: inline-block !important;
+
+width: auto !important;
+
+padding: 6px 10px !important;
+
+margin: 2px !important;
+
+font-size: 12px !important;
+
+white-space: nowrap !important;
+
+}
+
+
+
+/* 広い画面の時だけ、カードを自動中央寄せにする */
+
+.card {
+
+margin: 0 auto !important; /* これで左詰めを防止して常に真ん中にします */
+
+}
+
+
+
+/* 管理者画面など、広い場所が必要な時はカードを少し広げる（max-widthで限界を設定） */
+
+.card:has(.admin-table),
+
+.card:has(.history-table) {
+
+max-width: 900px !important; /* 1000pxより少し狭くして、右側の空きすぎを防止 */
+
+width: 90% !important;
+
+}
+
+
+
+/* ==========================================================================
+
+12. 商品登録・編集画面のボタン重なり解消 ＆ カードサイズ最適化
+
+========================================================================== */
+
+/* 縦に長い入力項目に合わせて、登録・編集カードを「ちょうどいい幅（520px）」に調整 */
+
+.card.admin-register-card {
+
+width: 100% !important;
+
+max-width: 520px !important;
+
+padding: 45px !important;
+
+}
+
+
+
+/* 🚨 ボタンが重なる原因（aタグの性質）を「inline-block」で強制的に解決！ */
+
+.button {
+
+display: inline-block !important;
+
+box-sizing: border-box !important;
+
+text-align: center !important;
+
+text-decoration: none !important; /* 戻るボタンの下線を消す */
+
+}
+
+
+
+/* ボタンを上下に綺麗に隙間（12px）をあけて整列させる */
+
+.button-group {
+
+display: flex !important;
+
+flex-direction: column !important;
+
+gap: 12px !important;
+
+width: 100% !important;
+
+margin-top: 30px !important;
+
+}
+
+
+
+/* 重なりの原因になる個別のマージンを安全にリセット */
+
+.button-group .button {
+
+margin-top: 0 !important;
+
+} 
+
+/* ==========================================================================
+   14. 商品管理テーブルの列幅を均等に整える
+   ========================================================================== */
+
+/* テーブルの列幅を固定してズレを防止 */
+.admin-table th, 
+.admin-table td {
+    padding: 12px 10px !important;
+    vertical-align: middle !important; /* 画像と文字の高さを中央で揃える */
+    text-align: center !important;     /* 基本は中央揃え */
+}
+
+/* 商品名と内容量は左寄せで見やすく */
+.col-name, .col-volume {
+    text-align: left !important;
+}
+
+/* 各列の幅を強制指定 */
+.admin-table th:nth-child(1) { width: 80px; }  /* 画像 */
+.admin-table th:nth-child(2) { width: 200px; } /* 商品名 */
+.admin-table th:nth-child(3) { width: 100px; } /* 価格 */
+.admin-table th:nth-child(4) { width: 150px; } /* 内容量 */
+.admin-table th:nth-child(5) { width: 100px; } /* 在庫 */
+.admin-table th:nth-child(6) { width: 150px; } /* 操作 */
+
+/* 管理画面のヘッダータイトルを左に寄せる */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }

@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 
 import jp.co.aforce.beans.CartItem;
 import jp.co.aforce.beans.Product;
+import jp.co.aforce.beans.Users;
 import jp.co.aforce.dao.ProductDAO;
 import tool.Action;
 
@@ -17,12 +18,29 @@ public class CartAddAction extends Action {
 	public String execute(
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+	
 
 		HttpSession session = request.getSession(false);
-		if (session == null || session.getAttribute("user") == null) {
-			return "/views/login-in.jsp";
-		}
+		Users user = (session != null) ? (Users) session.getAttribute("user") : null;
 
+		if (user == null) {
+
+		    session.setAttribute(
+		        "pendingProductId",
+		        request.getParameter("productId"));
+
+		    session.setAttribute(
+		        "pendingQuantity",
+		        request.getParameter("quantity"));
+
+		    request.setAttribute(
+		        "message",
+		        "カートに追加するにはログインしてください");
+
+		    return "/views/login-in.jsp";
+		}
+		
+		
 		//商品詳細画面から送信された商品IDを取得
 		//hiddenタグで渡された値を受け取る
 		String productId = request.getParameter("productId");

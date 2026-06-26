@@ -6,6 +6,13 @@
 Product product = (Product) request.getAttribute("product");
 %>
 
+<%
+String sort = (String) request.getAttribute("sort");
+if (sort == null) {
+	sort = "";
+}
+%>
+
 <div class="container">
 
 	<div class="product-detail">
@@ -15,47 +22,95 @@ Product product = (Product) request.getAttribute("product");
 		<img
 			src="<%=request.getContextPath()%>/images/<%=product.getImagePath()%>">
 
-		<p class="detail-price">
-			価格：<%=product.getPrice()%>円
-		</p>
-		<p>在庫数：<%=product.getStock()%></p>
-		<p>内容量：<%=product.getVolume()%></p>
-		<p>産地：<%=product.getOrigin()%></p>
+		<div class="detail-row">
+			<div class="label">価格：</div>
+			<div class="value"><%=product.getPrice()%>円
+			</div>
+		</div>
 
-		<p>
-			甘味： <span class="rating"> <%for (int i = 0; i < product.getSweetness(); i++) {%>
-				🍓 <%
- }
- for (int i = product.getSweetness(); i < 5; i++) {
- %> ☆ <%}%>
-			</span>
-		</p>
+		<div class="detail-row">
+			<div class="label">在庫数：</div>
+			<div class="value"><%=product.getStock()%></div>
+		</div>
 
-		<p>
-			酸味： <span class="rating"> <%for (int i = 0; i < product.getSourness(); i++) {%>
-				🍓 <%
- }
- for (int i = product.getSourness(); i < 5; i++) {
- %> ☆ <%}%>
-			</span>
-		</p>
+		<div class="detail-row">
+			<div class="label">内容量：</div>
+			<div class="value"><%=product.getVolume()%></div>
+		</div>
 
+		<div class="detail-row">
+			<div class="label">産地：</div>
+			<div class="value"><%=product.getOrigin()%></div>
+		</div>
 
-		<p>
-			粒の大きさ： <span class="rating"> <%for (int i = 0; i < product.getBerrySize(); i++) {%>
-				🍓 <%
- }
- for (int i = product.getBerrySize(); i < 5; i++) {
- %> ☆ <%}%>
-			</span>
-		</p>
+		<div class="detail-row">
+			<div class="label">甘味：</div>
+			<div class="value rating">
+				<%
+				for (int i = 0; i < product.getSweetness(); i++) {
+				%>
+				🍓
+				<%
+				}
+				%>
+				<%
+				for (int i = product.getSweetness(); i < 5; i++) {
+				%>
+				🐝
+				<%
+				}
+				%>
+			</div>
+		</div>
 
-		<p>
-			特徴：<%=product.getDescription()%></p>
+		<div class="detail-row">
+			<div class="label">酸味：</div>
+			<div class="value rating">
+				<%
+				for (int i = 0; i < product.getSourness(); i++) {
+				%>
+				🍓
+				<%
+				}
+				%>
+				<%
+				for (int i = product.getSourness(); i < 5; i++) {
+				%>
+				🐝
+				<%
+				}
+				%>
+			</div>
+		</div>
+
+		<div class="detail-row">
+			<div class="label">粒の大きさ：</div>
+			<div class="value rating">
+				<%
+				for (int i = 0; i < product.getBerrySize(); i++) {
+				%>
+				🍓
+				<%
+				}
+				%>
+				<%
+				for (int i = product.getBerrySize(); i < 5; i++) {
+				%>
+				🐝
+				<%
+				}
+				%>
+			</div>
+		</div>
+
+		<div class="detail-row">
+			<div class="label">特徴：</div>
+			<div class="value"><%=product.getDescription()%></div>
+		</div>
+
 
 		<hr>
-		<h3>おすすめレシピ</h3>
-		<p>準備中</p>
+
 
 		<h3>ご購入前の注意事項</h3>
 
@@ -86,10 +141,10 @@ Product product = (Product) request.getAttribute("product");
 			<input type="submit" value="カートに入れる" class="button">
 		</form>
 
-		<a href="ProductList.action" class="button">一覧に戻る </a>
+		<a href="ProductList.action?sort=<%=sort%>" class="button">一覧に戻る </a>
 
 	</div>
 
 </div>
-<script src="${pageContext.request.contextPath}/js/script.js"></script>
+
 <%@include file="../footer.jsp"%>

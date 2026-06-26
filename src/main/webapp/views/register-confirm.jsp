@@ -1,5 +1,5 @@
 <%@page contentType="text/html; charset=UTF-8"%>
-<%@include file="../mini-header.jsp"%>
+<%@include file="../header.jsp"%>
 
 <div class="container">
     <div class="card">

@@ -18,13 +18,14 @@ public class AdminProductListAction extends Action {
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		HttpSession session = request.getSession();
-		Users user = (Users) session.getAttribute("user");
+    	HttpSession session = request.getSession(false);
+    	Users user = (session != null) ? (Users) session.getAttribute("user") : null;
 
-		//管理者以外はアクセス禁止
-		if (user == null || user.getRole() != 1) {
-			return "/views/login-error.jsp";
-		}
+    	//ログインしていない、または、管理者（role==1）じゃないならはじく
+    	if (user == null || user.getRole() != 1) {
+    	    request.setAttribute("message", "管理者権限が必要です。ログインし直してください。");
+    	    return "/views/login-in.jsp"; 
+    	}
 
 		//商品一覧
 		ProductDAO dao = new ProductDAO();

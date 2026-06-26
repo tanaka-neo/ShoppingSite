@@ -1,20 +1,18 @@
 <%@page contentType="text/html; charset=UTF-8"%>
-
+<%@include file="../header.jsp"%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/style.css">
 	
-<!DOCTYPE html>
-<html>
-<head>
-<title>shoppingsite</title>
-</head>
-<body>
-
 <div class="container">
 
 	<div class="card">
 
 		<h1>ログイン</h1>
+   <% if(request.getAttribute("message") != null){ %>
+       <p class="message message-error">
+            <%= request.getAttribute("message") %>
+        </p>
+    <% } %>
 
 		<form
 			action="${pageContext.request.contextPath}/jp/co/aforce/servlet/Login.action"
@@ -36,5 +34,4 @@
 
 	</div>
 </div>
-</body>
-</html>
+<%@include file="../footer.jsp"%>

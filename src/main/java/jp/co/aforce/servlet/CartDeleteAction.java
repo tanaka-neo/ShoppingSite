@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import jp.co.aforce.beans.CartItem;
+import jp.co.aforce.beans.Users;
 import tool.Action;
 
 public class CartDeleteAction extends Action {
@@ -16,9 +17,13 @@ public class CartDeleteAction extends Action {
 			HttpServletResponse response) throws Exception {
 
 		HttpSession session = request.getSession(false);
-		if (session == null || session.getAttribute("user") == null) {
-			return "/views/login-in.jsp";
+		Users user = (session != null) ? (Users) session.getAttribute("user") : null;
+
+		//ログインしていない（ゲスト状態）なら、ログイン画面へ
+		if (user == null) {
+		    return "/views/login-in.jsp"; 
 		}
+		
 		//削除対象用の商品IDを取得
 		String productId = request.getParameter("productId");
 

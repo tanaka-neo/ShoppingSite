@@ -14,12 +14,14 @@ public class AdminProductRegisterConfirmAction extends Action {
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		HttpSession session = request.getSession();
-		Users user = (Users) session.getAttribute("user");
-		//管理者以外はアクセス禁止
-		if (user == null || user.getRole() != 1) {
-			return "/views/login-error.jsp";
-		}
+    	HttpSession session = request.getSession(false);
+    	Users user = (session != null) ? (Users) session.getAttribute("user") : null;
+
+    	//ログインしていない、または、管理者（role==1）じゃないならはじく
+    	if (user == null || user.getRole() != 1) {
+    	    request.setAttribute("message", "管理者権限が必要です。ログインし直してください。");
+    	    return "/views/login-in.jsp"; 
+    	}
 
 		// 1. 入力画面（Form）から送信されてきた商品情報をすべて取得
 		String productName = request.getParameter("productName");
